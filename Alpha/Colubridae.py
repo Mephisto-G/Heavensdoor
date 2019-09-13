@@ -1,5 +1,0 @@
-#Criar Usuário
-
-#Cadastrar Biometria
-
-#
