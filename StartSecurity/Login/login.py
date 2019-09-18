@@ -70,11 +70,11 @@ def login_sucess():
   Button(screen3, text = "OK", command =delete2).pack()
 
 def password_not_recognised():
-  global screen4
+   global screen4
   screen4 = Toplevel(screen2)
   screen4.title("Success")
   screen4.geometry("150x100")
-  Label(screen4, text = "Password Error").pack()
+  Label(screen4, text = "Senha Incorreta").pack()
   Button(screen4, text = "OK", command =delete3).pack()
 
 def user_not_found():
@@ -82,7 +82,7 @@ def user_not_found():
   screen5 = Toplevel(screen2)
   screen5.title("Success")
   screen5.geometry("150x100")
-  Label(screen5, text = "User Not Found").pack()
+  Label(screen5, text = "Usuario Inexistente").pack()
   Button(screen5, text = "OK", command =delete4).pack()
 
 def login_verify():
