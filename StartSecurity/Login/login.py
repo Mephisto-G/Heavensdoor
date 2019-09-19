@@ -61,14 +61,6 @@ def delete3():
 def delete4():
   screen5.destroy()
 
-def login_sucess():
-  global screen3
-  screen3 = Toplevel(screen2)
-  screen3.title("Success")
-  screen3.geometry("150x100")
-  Label(screen3, text = "Login Sucess").pack()
-  Button(screen3, text = "OK", command =delete2).pack()
-
 def password_not_recognised():
   global screen4
   screen4 = Toplevel(screen2)
@@ -124,7 +116,7 @@ def main_screen():
   username_entry1.pack()
   Label(screen2, text = "").pack()
   Label(screen2, text = "Senha ").pack()
-  password_entry1 = Entry(screen2, textvariable = password_verify)
+  password_entry1 = Entry(screen2, textvariable = password_verify, show = "***")
   password_entry1.pack()
   Label(screen2, text = "").pack()
   Button(screen2, text = "Login", width = 10, height = 1, command = login_verify).pack()
