@@ -1,6 +1,46 @@
 from tkinter import *
 import os
 
+def change_password2():
+     username_info = username_verify.get()
+     password_info = password_verify.get()
+
+     file=open(username_info, "w")
+     file.write(username_info+"\n")
+     file.write(password_info)
+     file.close()
+
+     username_entry1.delete(0, END)
+     password_entry1.delete(0, END)
+
+
+     Label(screen1, text = "Alteração Concluida", fg = "green" ,font = ("calibri", 11)).pack()
+
+def change_password():
+    global screen1
+    screen1 = Toplevel(screen2)
+    screen1.title("Start Security")
+    screen1.geometry("300x200")
+
+    global username_verify
+    global password_verify
+
+    username_verify = StringVar()
+    password_verify = StringVar()
+
+    global username_entry1
+    global password_entry1
+
+    Label(screen1, text = "Usuario ").pack()
+    username_entry1 = Entry(screen1, textvariable = username_verify)
+    username_entry1.pack()
+    Label(screen1, text = "").pack()
+    Label(screen1, text = "Senha ").pack()
+    password_entry1 = Entry(screen1, textvariable = password_verify)
+    password_entry1.pack()
+    Label(screen1, text = "").pack()
+    Button(screen1, text = "Concluir", width = 10, height = 1, command = change_password2).pack()
+
 def register_user():
   print("working")
 
@@ -50,10 +90,7 @@ def home():
   screen1.geometry("300x250")
   Label(screen1, text = "").pack()
   Button(screen1, text = "Registrar Usuario", width = 15, height = 3, command = register).pack()
-  Button(screen1, text = "Alterar Senha", width = 15, height = 3).pack()
-
-def delete2():
-  screen3.destroy()
+  Button(screen1, text = "Alterar Senha", width = 15, height = 3, command = change_password).pack()
 
 def delete3():
   screen4.destroy()
