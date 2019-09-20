@@ -16,8 +16,8 @@ def change_password2():
 
      Label(screen1, text = "Alteração Concluida", fg = "green" ,font = ("calibri", 11)).pack()
 
-def change_password():
-    global screen1
+def change_password(): #feche o programa apos alterar os dados,e abra dnv para funcionar 
+    global screen1,
     screen1 = Toplevel(screen2)
     screen1.title("Start Security")
     screen1.geometry("300x200")
