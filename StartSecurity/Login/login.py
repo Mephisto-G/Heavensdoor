@@ -1,5 +1,30 @@
 from tkinter import *
 import os
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+def send_email():
+    email = 'linkdragonsuporte@gmail.com'
+    password = 'XnY<D42s[8~EhS".'
+    send_to_email = 'Ikurosaki531@gmail.com'
+    subject = 'AVISO!!!!!!' # The subject line
+    message = 'Erro na autenticação do veiculo'
+
+    msg = MIMEMultipart()
+    msg['From'] = email
+    msg['To'] = send_to_email
+    msg['Subject'] = subject
+
+    # Attach the message to the MIMEMultipart object
+    msg.attach(MIMEText(message, 'plain'))
+
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(email, password)
+    text = msg.as_string() # You now need to convert the MIMEMultipart object to a string to send
+    server.sendmail(email, send_to_email, text)
+    server.quit()
 
 def change_password2():
      username_info = username_verify.get()
@@ -149,10 +174,10 @@ def login_verify():
     if password1 in verify:
         home()
     else:
-        password_not_recognised()
+        password_not_recognised(),send_email()
 
   else:
-        user_not_found()
+        user_not_found(),send_email()
 
 def main_screen():
   global screen2
@@ -182,4 +207,3 @@ def main_screen():
   screen2.mainloop()
 
 main_screen()
-
