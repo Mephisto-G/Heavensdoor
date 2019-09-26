@@ -6,6 +6,7 @@ from email.mime.multipart import MIMEMultipart
 import hashlib
 import time
 
+
 def search_bio():
     try:
         f = PyFingerprint('/dev/ttyUSB0', 57600, 0xFFFFFFFF, 0x00000000)
@@ -274,8 +275,17 @@ def register_user():
 
   Label(screen1, text = "Registro Concluido", fg = "green" ,font = ("calibri", 11)).pack()
 
+def voltar():
+    screen2.destroy()
+
 def voltar_registerhome():
     screen1.destroy()
+
+def seila2():
+    screen50.destroy()
+
+def seila():
+    screen40.destroy()
 
 def voltar_login():
     screen12.destroy()
@@ -325,7 +335,7 @@ def change_password():
     global screen1
     screen1 = Toplevel(screen2)
     screen1.title("Start Security")
-    screen1.geometry("300x250")
+    screen1.attributes('-fullscreen',True)
 
     global username_verify
     global password_verify
@@ -339,27 +349,36 @@ def change_password():
     global password_entry1
     global email_entry1
 
-    Label(screen1, text = "Usuario ").pack()
-    username_entry1 = Entry(screen1, textvariable = username_verify)
+    Label(screen1, text = "").pack()
+    Label(screen1, text = "").pack()
+    Label(screen1, text = "").pack()
+    Label(screen1, text = "").pack()
+    Label(screen1, text = "").pack()
+    Label(screen1, text = "").pack()
+    Label(screen1, text = "").pack()
+    Label(screen1, text = "Usuario ", font = "Arial 30").pack()
+    username_entry1 = Entry(screen1, textvariable = username_verify, font = "Arial 30")
     username_entry1.pack()
     Label(screen1, text = "").pack()
-    Label(screen1, text = "Senha ").pack()
-    password_entry1 = Entry(screen1, textvariable = password_verify)
+    Label(screen1, text = "").pack()
+    Label(screen1, text = "Senha ", font = "Arial 30").pack()
+    password_entry1 = Entry(screen1, textvariable = password_verify, font = "Arial 30")
     password_entry1.pack()
     Label(screen1, text = "").pack()
-    Label(screen1, text = "Email ").pack()
-    email_entry1 = Entry(screen1, textvariable = email_verify)
+    Label(screen1, text = "").pack()
+    Label(screen1, text = "Email ", font = "Arial 30").pack()
+    email_entry1 = Entry(screen1, textvariable = email_verify, font = "Arial 30")
     email_entry1.pack()
     Label(screen1, text = "").pack()
 
-    Button(screen1, text = "Concluir", width = 10, height = 1, command = change_password2).pack()
-    Button(screen1, text = "Voltar", width = 10, height = 1, command = voltar_registerhome).pack()
+    Button(screen1, text = "Concluir", width = 10, height = 1, command = change_password2, bg = "green", font = "Arial 12").pack()
+    Button(screen1, text = "Voltar", width = 10, height = 1, command = voltar_registerhome, bg = "red", font = "Arial 12").pack()
 
 def register():
   global screen1
   screen1 = Toplevel(screen2)
   screen1.title("Start Security")
-  screen1.geometry("300x250")
+  screen1.attributes('-fullscreen',True)
 
   global username
   global password
@@ -372,60 +391,107 @@ def register():
   password = StringVar()
   email = StringVar()
 
-  Label(screen1, text = "Por favor preencha os campos abaixo").pack()
+  Label(screen1, text = "Por favor preencha os campos abaixo", font = "Arial 20").pack()
   Label(screen1, text = "").pack()
-  Label(screen1, text = "Usuario * ").pack()
-  username_entry = Entry(screen1, textvariable = username)
+  Label(screen1, text = "").pack()
+  Label(screen1, text = "").pack()
+  Label(screen1, text = "Usuario * ", font = "Arial 30").pack()
+  username_entry = Entry(screen1, textvariable = username, font = "Arial 30")
   username_entry.pack()
-  Label(screen1, text = "Senha * ").pack()
-  password_entry =  Entry(screen1, textvariable = password)
+  Label(screen1, text = "").pack()
+  Label(screen1, text = "").pack()
+  Label(screen1, text = "").pack()
+  Label(screen1, text = "Senha * ", font = "Arial 30").pack()
+  password_entry =  Entry(screen1, textvariable = password, font = "Arial 30")
   password_entry.pack()
   Label(screen1, text = "").pack()
-  Label(screen1, text = "Email * ").pack()
-  email_entry =  Entry(screen1, textvariable = email)
+  Label(screen1, text = "").pack()
+  Label(screen1, text = "").pack()
+  Label(screen1, text = "Email * ", font = "Arial 30").pack()
+  email_entry =  Entry(screen1, textvariable = email, font = "Arial 30")
   email_entry.pack()
   Label(screen1, text = "").pack()
-
-  Button(screen1, text = "Registrar", width = 10, height = 1, command = register_user).pack()
-  Button(screen1, text = "Voltar", width = 10, height = 1, command = voltar_registerhome).pack()
+  Label(screen1, text = "").pack()
+  
+  Button(screen1, text = "Registrar", width = 10, height = 1, command = register_user, bg = "green", font = "Arial 12").pack()
+  Button(screen1, text = "Voltar", width = 10, height = 1, command = voltar_registerhome, bg = "red", font = "Arial 12").pack()
 
 def register_home():
-    global screen1
-    screen1 = Toplevel(screen2)
-    screen1.title("Start Security")
-    screen1.geometry("300x200")
-    Label(screen1, text = "").pack()
-    Button(screen1, text = "Registrar Login", width = 15, height = 3, command = register).pack()
-    Button(screen1, text = "Registrar Biometria", width = 15, height = 3, command = register_bio).pack()
-    Button(screen1, text = "Voltar", width = 15, height = 3, command = voltar_registerhome).pack()
+    global screen12
+    screen12 = Toplevel(screen2)
+    screen12.title("Start Security")
+    screen12.attributes('-fullscreen',True)
+    Label(screen12, text = "").pack()
+    Label(screen12, text = "").pack()
+    Label(screen12, text = "").pack()
+    Label(screen12, text = "").pack()
+    Label(screen12, text = "").pack()
+    Label(screen12, text = "").pack()
+    Label(screen12, text = "").pack()
+    Label(screen12, text = "").pack()
+    Label(screen12, text = "").pack()
+    Label(screen12, text = "").pack()
+    Button(screen12, text = "Registrar Login", width = 25, height = 3, command = register, font = "Arial 20").pack()
+    Label(screen12, text = "").pack()
+    Button(screen12, text = "Registrar Biometria", width = 25, height = 3, command = register_bio, font = "Arial 20").pack()
+    Label(screen12, text = "").pack()
+    Label(screen12, text = "").pack()
+    Label(screen12, text = "").pack()
+    Button(screen12, text = "Voltar", width = 12, height = 1, command = voltar_login, bg = "red", font = "Arial 15").pack()
 
 def Change_home():
     global screen4
     screen4 = Toplevel(screen2)
     screen4.title("Start Security")
-    screen4.geometry("300x150")
+    screen4.attributes('-fullscreen',True)
     Label(screen4, text = "").pack()
-    Button(screen4, text = "Remover Biometria", width = 15, height = 3, command = delete_bio).pack()
-    Button(screen4, text = "Alterar Login", width = 15, height = 3, command = change_password).pack()
-    Button(screen4, text = "Voltar", width = 15, height = 3, command = delete3).pack()
+    Label(screen4, text = "").pack()
+    Label(screen4, text = "").pack()
+    Label(screen4, text = "").pack()
+    Label(screen4, text = "").pack()
+    Label(screen4, text = "").pack()
+    Label(screen4, text = "").pack()
+    Label(screen4, text = "").pack()
+    Label(screen4, text = "").pack()
+    Label(screen4, text = "").pack()
+    Label(screen4, text = "").pack()
+    Button(screen4, text = "Remover Biometria", width = 25, height = 3, command = delete_bio, font = "Arial 20").pack()
+    Label(screen4, text = "").pack()
+    Button(screen4, text = "Alterar Login", width = 25, height = 3, command = change_password, font = "Arial 20").pack()
+    Label(screen4, text = "").pack()
+    Label(screen4, text = "").pack()
+    Label(screen4, text = "").pack()
+    Button(screen4, text = "Voltar", width = 12, height = 1, command = delete3, bg = "red", font = "Arial 15" ).pack()
 
 def home():
-  global screen1
-  screen1 = Toplevel(screen2)
-  screen1.title("Start Security")
-  Label(screen1,text = "Bem Vindo", bg = "grey", width = 300, height = 2, font = ("Calibri", 13)).pack()
-  screen1.geometry("300x250")
-  Label(screen1, text = "").pack()
-  Button(screen1, text = "Registrar Usuario", width = 15, height = 3, command = register_home).pack()
-  Button(screen1, text = "Alterar Dados", width = 15, height = 3, command = Change_home).pack()
-  Button(screen1, text = "Desconectar", width = 15, height = 3, command = voltar_registerhome).pack()
+  global screen40
+  screen40 = Toplevel(screen2)
+  screen40.title("Start Security")
+  Label(screen40,text = "Bem Vindo", bg = "grey", width = 300, height = 2, font = "Arial 20").pack()
+  screen40.attributes('-fullscreen',True)
+  Label(screen40, text = "").pack()
+  Label(screen40, text = "").pack()
+  Label(screen40, text = "").pack()
+  Label(screen40, text = "").pack()
+  Label(screen40, text = "").pack()
+  Label(screen40, text = "").pack()
+  Label(screen40, text = "").pack()
+  Label(screen40, text = "").pack()
+  Button(screen40, text = "Registrar Usuario", width = 25, height = 3, command = register_home, font = "Arial 20" ).pack()
+  Label(screen40, text = "").pack()
+  Button(screen40, text = "Alterar Dados", width = 25, height = 3, command = Change_home, font = "Arial 20").pack()
+  Label(screen40, text = "").pack()
+  Label(screen40, text = "").pack()
+  Label(screen40, text = "").pack()
+  Label(screen40, text = "").pack()
+  Label(screen40, text = "").pack()
+  Button(screen40, text = "Desconectar", width = 12, height = 2, command = seila, bg = "red", font = "Arial 15").pack()
 
 def login():
-    global screen12
-    screen12 = Toplevel(screen2)
-    screen12.title("Start Security")
-    screen12.geometry("250x200")
-
+    global screen50
+    screen50 = Toplevel(screen2)
+    screen50.title("Start Security")
+    screen50.attributes('-fullscreen',True)
     global username_verify
     global password_verify
 
@@ -435,26 +501,48 @@ def login():
     global username_entry1
     global password_entry1
 
-    Label(screen12, text = "Usuario ").pack()
-    username_entry1 = Entry(screen12, textvariable = username_verify)
+    Label(screen50, text = "").pack()
+    Label(screen50, text = "").pack()
+    Label(screen50, text = "").pack()
+    Label(screen50, text = "").pack()
+    Label(screen50, text = "").pack()
+    Label(screen50, text = "").pack()
+    Label(screen50, text = "").pack()
+    Label(screen50, text = "").pack()
+    Label(screen50, text = "").pack()
+    Label(screen50, text = "").pack()
+    Label(screen50, text = "Usuario ", font = "Arial 30").pack()
+    username_entry1 = Entry(screen50, textvariable = username_verify, font = "Arial 30")
     username_entry1.pack()
-    Label(screen12, text = "").pack()
-    Label(screen12, text = "Senha ").pack()
-    password_entry1 = Entry(screen12, textvariable = password_verify, show = "***")
+    Label(screen50, text = "").pack()
+    Label(screen50, text = "Senha ", font = "Arial 30").pack()
+    password_entry1 = Entry(screen50, textvariable = password_verify, show = "***", font = "Arial 30")
     password_entry1.pack()
-    Label(screen12, text = "").pack()
-    Button(screen12, text = "Login", width = 10, height = 1, command = login_verify).pack()
-    Button(screen12, text = "Voltar", width = 10, height = 1, command = voltar_login).pack()
+    Label(screen50, text = "").pack()
+    Button(screen50, text = "Login", width = 10, height = 1, command = login_verify, bg = "green", font = "Arial 12").pack()
+    Button(screen50, text = "Voltar", width = 10, height = 1, command = seila2, bg = "red", font = "Arial 12").pack()
 
 def main_screen():
-  global screen2
-  screen2 = Tk()
-  screen2.title("Start Security")
-  screen2.geometry("300x150")
-  Label(screen2, text = "").pack()
-  Button(screen2, text = "Biometria", width = 15, height = 3, command = search_bio).pack()
-  Button(screen2, text = "Login", width = 15, height = 3, command = login).pack()
-
-  screen2.mainloop()
+    global screen2
+    screen2 = Tk()
+    screen2.title("Start Security")
+    screen2.attributes('-fullscreen',True)
+    Label(screen2, text = "").pack()
+    Label(screen2, text = "").pack()
+    Label(screen2, text = "").pack()
+    Label(screen2, text = "").pack()
+    Label(screen2, text = "").pack()
+    Label(screen2, text = "").pack()
+    Label(screen2, text = "").pack()
+    Label(screen2, text = "").pack()
+    Label(screen2, text = "").pack()
+    Label(screen2, text = "").pack()
+    Label(screen2, text = "").pack()
+    Button(screen2, text = "Biometria", width = 25, height = 3, command = search_bio, font = "Arial 20").pack()
+    Button(screen2, text = "Login", width = 25, height = 3, command = login, font = "Arial 20").pack()
+    Label(screen2, text = "").pack()
+    Label(screen2, text = "").pack()
+    Button(screen2, text = "Sair", width = 10, height = 1, command = voltar, font = "Arial 12", bg = "red").pack()
+    screen2.mainloop()
 
 main_screen()
