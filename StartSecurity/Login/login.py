@@ -5,6 +5,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import hashlib
 import time
+from pyfingerprint.pyfingerprint import PyFingerprint
 
 def search_bio():
     try:
