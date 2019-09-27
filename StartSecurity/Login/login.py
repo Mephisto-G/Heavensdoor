@@ -6,7 +6,6 @@ from email.mime.multipart import MIMEMultipart
 import hashlib
 import time
 
-
 def search_bio():
     try:
         f = PyFingerprint('/dev/ttyUSB0', 57600, 0xFFFFFFFF, 0x00000000)
@@ -256,25 +255,6 @@ def change_password2():
 
      Label(screen1, text = "Alteração Concluida", fg = "green" ,font = ("calibri", 11)).pack()
 
-def register_user():
-  print("working")
-
-  username_info = username.get()
-  password_info = password.get()
-  email_info = email.get()
-
-  file=open(username_info, "w")
-  file.write(username_info+"\n")
-  file.write(password_info+"\n")
-  file.write(email_info)
-  file.close()
-
-  username_entry.delete(0, END)
-  password_entry.delete(0, END)
-  email_entry.delete(0, END)
-
-  Label(screen1, text = "Registro Concluido", fg = "green" ,font = ("calibri", 11)).pack()
-
 def voltar():
     screen2.destroy()
 
@@ -296,21 +276,60 @@ def delete3():
 def delete4():
   screen5.destroy()
 
+def seila3():
+    screen112.destroy()
+
 def password_not_recognised():
   global screen4
   screen4 = Toplevel(screen2)
   screen4.title("Success")
-  screen4.geometry("150x100")
-  Label(screen4, text = "Senha Incorreta").pack()
-  Button(screen4, text = "OK", command =delete3).pack()
+  screen4.attributes('-fullscreen',True)
+  Label(screen4, text = "").pack()
+  Label(screen4, text = "").pack()
+  Label(screen4, text = "").pack()
+  Label(screen4, text = "").pack()
+  Label(screen4, text = "").pack()
+  Label(screen4, text = "").pack()
+  Label(screen4, text = "").pack()
+  Label(screen4, text = "").pack()
+  Label(screen4, text = "").pack()
+  Label(screen4, text = "").pack()
+  Label(screen4, text = "").pack()
+  Label(screen4, text = "").pack()
+  Label(screen4, text = "").pack()
+  Label(screen4, text = "").pack()
+  Label(screen4, text = "").pack()
+  Label(screen4, text = "").pack()
+  Label(screen4, text = "Senha Incorreta", font = "Arial 30").pack()
+  Label(screen4, text = "").pack()
+  Label(screen4, text = "").pack()
+  Button(screen4, text = "OK", command =delete3, width = 10, height = 1, font = "Arial 12", bg = "red").pack()
 
 def user_not_found():
   global screen5
   screen5 = Toplevel(screen2)
   screen5.title("Success")
-  screen5.geometry("150x100")
-  Label(screen5, text = "Usuario Inexistente").pack()
-  Button(screen5, text = "OK", command =delete4).pack()
+  screen5.attributes('-fullscreen',True)
+  Label(screen5, text = "").pack()
+  Label(screen5, text = "").pack()
+  Label(screen5, text = "").pack()
+  Label(screen5, text = "").pack()
+  Label(screen5, text = "").pack()
+  Label(screen5, text = "").pack()
+  Label(screen5, text = "").pack()
+  Label(screen5, text = "").pack()
+  Label(screen5, text = "").pack()
+  Label(screen5, text = "").pack()
+  Label(screen5, text = "").pack()
+  Label(screen5, text = "").pack()
+  Label(screen5, text = "").pack()
+  Label(screen5, text = "").pack()
+  Label(screen5, text = "").pack()
+  Label(screen5, text = "").pack()
+  Label(screen5, text = "Usuario Inexistente", font = "Arial 30").pack()
+  Label(screen5, text = "").pack()
+  Label(screen5, text = "").pack()
+  Button(screen5, text = "OK", command =delete4, bg = "red", font = "Arial 12", width = 10, height = 1).pack()
 
 def login_verify():
 
@@ -330,6 +349,58 @@ def login_verify():
 
   else:
         user_not_found(),send_email()
+
+def delete_user():
+    username1 = username_verify.get()
+    username_entry1.delete(0, END)
+    list_of_files = os.listdir()
+    if username1 in list_of_files:
+        os.remove(username1)
+        Label(screen112, text = "Usuario removido com sucesso", fg = "green" ,font = ("calibri", 11)).pack()
+    else:
+        user_not_found()
+
+def delete_user_home():
+    global screen112
+    screen112 = Toplevel(screen2)
+    screen112.attributes('-fullscreen',True)
+
+    global username_verify
+    global username_entry1
+
+    Label(screen112, text = "").pack()
+    Label(screen112, text = "").pack()
+    Label(screen112, text = "").pack()
+    Label(screen112, text = "").pack()
+    Label(screen112, text = "").pack()
+    Label(screen112, text = "").pack()
+    Label(screen112, text = "").pack()
+    Label(screen112, text = "Usuario ", font = "Arial 30").pack()
+    username_entry1 = Entry(screen112, textvariable = username_verify, font = "Arial 30")
+    username_entry1.pack()
+    Label(screen112, text = "").pack()
+
+    Button(screen112, text = "Concluir", width = 10, height = 1, command = delete_user, bg = "green", font = "Arial 12").pack()
+    Button(screen112, text = "Voltar", width = 10, height = 1, command = seila3, bg = "red", font = "Arial 12").pack()
+
+def register_user():
+    print("working")
+
+    username_info = username.get()
+    password_info = password.get()
+    email_info = email.get()
+
+    file=open(username_info, "w")
+    file.write(username_info+"\n")
+    file.write(password_info+"\n")
+    file.write(email_info)
+    file.close()
+
+    username_entry.delete(0, END)
+    password_entry.delete(0, END)
+    email_entry.delete(0, END)
+
+    Label(screen1, text = "Registro Concluido", fg = "green" ,font = ("calibri", 11)).pack()
 
 def change_password():
     global screen1
@@ -412,7 +483,7 @@ def register():
   email_entry.pack()
   Label(screen1, text = "").pack()
   Label(screen1, text = "").pack()
-  
+
   Button(screen1, text = "Registrar", width = 10, height = 1, command = register_user, bg = "green", font = "Arial 12").pack()
   Button(screen1, text = "Voltar", width = 10, height = 1, command = voltar_registerhome, bg = "red", font = "Arial 12").pack()
 
@@ -453,11 +524,11 @@ def Change_home():
     Label(screen4, text = "").pack()
     Label(screen4, text = "").pack()
     Label(screen4, text = "").pack()
-    Label(screen4, text = "").pack()
-    Label(screen4, text = "").pack()
     Button(screen4, text = "Remover Biometria", width = 25, height = 3, command = delete_bio, font = "Arial 20").pack()
     Label(screen4, text = "").pack()
     Button(screen4, text = "Alterar Login", width = 25, height = 3, command = change_password, font = "Arial 20").pack()
+    Label(screen4, text = "").pack()
+    Button(screen4, text = "Remover Usuario", width = 25, height = 3, command = delete_user_home, font = "Arial 20").pack()
     Label(screen4, text = "").pack()
     Label(screen4, text = "").pack()
     Label(screen4, text = "").pack()
