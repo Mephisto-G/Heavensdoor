@@ -3,11 +3,11 @@ import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
 import hashlib
 import time
-import platform
-import subprocess
-from pyfingerprint.pyfingerprint import PyFingerprint
+
 
 def search_bio():
     try:
@@ -137,12 +137,12 @@ def delete_bio():
         print('Exception message: ' + str(e))
         exit(1)
 
-def send_email2():
+def send_email3():
     email = 'linkdragonsuporte@gmail.com'
     password = 'XnY<D42s[8~EhS".'
     send_to_email = 'Ikurosaki531@gmail.com'
-    subject = 'RISCO DE VIDA!!!' # The subject line
-    message = 'Violação de segurança #514'
+    subject = 'AVISO!!' # The subject line
+    body = 'Veiculo desbloqueado '
 
     msg = MIMEMultipart()
     msg['From'] = email
@@ -150,7 +150,43 @@ def send_email2():
     msg['Subject'] = subject
 
     # Attach the message to the MIMEMultipart object
-    msg.attach(MIMEText(message, 'plain'))
+    msg.attach(MIMEText(body, 'plain'))
+    filename = "teste.jpg"
+    attachment = open(filename, "rb")
+    p = MIMEBase('application', 'octet-stream')
+    p.set_payload((attachment).read())
+    encoders.encode_base64(p)
+    p.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+    msg.attach(p)
+
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(email, password)
+    text = msg.as_string() # You now need to convert the MIMEMultipart object to a string to send
+    server.sendmail(email, send_to_email, text)
+    server.quit()
+
+def send_email2():
+    email = 'linkdragonsuporte@gmail.com'
+    password = 'XnY<D42s[8~EhS".'
+    send_to_email = 'Ikurosaki531@gmail.com'
+    subject = 'RISCO DE VIDA!!!' # The subject line
+    body = 'Violação de segurança, proprietario do veiculo corre risco de vida '
+
+    msg = MIMEMultipart()
+    msg['From'] = email
+    msg['To'] = send_to_email
+    msg['Subject'] = subject
+
+    # Attach the message to the MIMEMultipart object
+    msg.attach(MIMEText(body, 'plain'))
+    filename = "teste.jpg"
+    attachment = open(filename, "rb")
+    p = MIMEBase('application', 'octet-stream')
+    p.set_payload((attachment).read())
+    encoders.encode_base64(p)
+    p.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+    msg.attach(p)
 
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
@@ -164,7 +200,7 @@ def send_email():
     password = 'XnY<D42s[8~EhS".'
     send_to_email = 'Ikurosaki531@gmail.com'
     subject = 'AVISO!!!!!!' # The subject line
-    message = 'Erro na autenticação do veiculo'
+    body = 'Erro na autenticação do veiculo'
 
     msg = MIMEMultipart()
     msg['From'] = email
@@ -172,7 +208,14 @@ def send_email():
     msg['Subject'] = subject
 
     # Attach the message to the MIMEMultipart object
-    msg.attach(MIMEText(message, 'plain'))
+    msg.attach(MIMEText(body, 'plain'))
+    filename = "teste.jpg"
+    attachment = open(filename, "rb")
+    p = MIMEBase('application', 'octet-stream')
+    p.set_payload((attachment).read())
+    encoders.encode_base64(p)
+    p.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+    msg.attach(p)
 
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
@@ -260,7 +303,7 @@ def login_verify():
     file1 = open(username1, "r")
     verify = file1.read().splitlines()
     if password1 in verify:
-        home()
+        home(), send_email3()
     else:
         password_not_recognised(),send_email()
 
@@ -462,7 +505,7 @@ def main_screen():
     Label(screen2, text = "").pack()
     Button(screen2, text = "Biometria", width = 25, height = 3, command = search_bio, font = "Arial 12").pack()
     Button(screen2, text = "Login", width = 25, height = 3, command = login, font = "Arial 12").pack()
-    Button(screen2, text = "PANICO", width = 25, height = 3, command = login, font = "Arial 12", bg = "yellow").pack()
+    Button(screen2, text = "PANICO", width = 25, height = 3, command = send_email2, font = "Arial 12", bg = "yellow").pack()
     Label(screen2, text = "").pack()
     Button(screen2, text = "Sair", width = 10, height = 1, command = voltar, font = "Arial 8", bg = "red").pack()
     screen2.mainloop()
