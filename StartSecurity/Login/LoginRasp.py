@@ -7,7 +7,7 @@ from email.mime.base import MIMEBase
 from email import encoders
 import hashlib
 import time
-from pyfingerprint import PyFingerprint
+import csv
 
 def search_bio():
     try:
@@ -137,12 +137,20 @@ def delete_bio():
         print('Exception message: ' + str(e))
         exit(1)
 
+def get_contacts():
+
+    emails = []
+    with open('Emails.txt', mode='r', encoding='utf-8') as contacts_file:
+        for a_contact in contacts_file:
+            emails.append(a_contact.split()[0])
+            return emails
+
 def send_email3():
     email = 'linkdragonsuporte@gmail.com'
     password = 'XnY<D42s[8~EhS".'
     send_to_email = 'Ikurosaki531@gmail.com'
     subject = 'AVISO!!' # The subject line
-    body = 'Veiculo desbloqueado '
+    body = 'Veiculo desbloqueado com segurança'
 
     msg = MIMEMultipart()
     msg['From'] = email
@@ -171,7 +179,7 @@ def send_email2():
     password = 'XnY<D42s[8~EhS".'
     send_to_email = 'Ikurosaki531@gmail.com'
     subject = 'RISCO DE VIDA!!!' # The subject line
-    body = 'Violação de segurança, proprietario do veiculo corre risco de vida '
+    body = 'Violação de segurança, botão de panico pressionado, proprietario do veiculo corre risco de vida '
 
     msg = MIMEMultipart()
     msg['From'] = email
@@ -196,9 +204,10 @@ def send_email2():
     server.quit()
 
 def send_email():
+
     email = 'linkdragonsuporte@gmail.com'
     password = 'XnY<D42s[8~EhS".'
-    send_to_email = 'Ikurosaki531@gmail.com'
+    send_to_email = 'Ikurosaki531@gmail.com' # read contacts
     subject = 'AVISO!!!!!!' # The subject line
     body = 'Erro na autenticação do veiculo'
 
@@ -303,7 +312,7 @@ def login_verify():
     file1 = open(username1, "r")
     verify = file1.read().splitlines()
     if password1 in verify:
-        home(), send_email3()
+        home(),
     else:
         password_not_recognised(),send_email()
 
@@ -350,6 +359,11 @@ def register_user():
     file.write(username_info+"\n")
     file.write(password_info+"\n")
     file.write(email_info)
+    file.close()
+
+    file=open("Emails.csv", "w")
+    file = csv.writer(email_info, delimiter=",", quoting=csv.QUOTE_ALL, quotechar="'")
+    csv_file_writer.writerow(list_data)
     file.close()
 
     username_entry.delete(0, END)
