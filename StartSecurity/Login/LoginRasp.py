@@ -8,132 +8,145 @@ from email import encoders
 import hashlib
 import time
 import csv
+from pyfingerprint.pyfingerprint import PyFingerprint
+
+try:
+    f = PyFingerprint('/dev/ttyUSB0', 57600, 0xFFFFFFFF, 0x00000000)
+
+    if ( f.verifyPassword() == False ):
+        raise ValueError('The given fingerprint sensor password is wrong!')
+
+except Exception as e:
+    print('The fingerprint sensor could not be initialized!')
+    print('Exception message: ' + str(e))
+    exit(1)
+
+
 
 def search_bio():
     try:
-        f = PyFingerprint('/dev/ttyUSB0', 57600, 0xFFFFFFFF, 0x00000000)
-
-        if ( f.verifyPassword() == False ):
-            raise ValueError('The given fingerprint sensor password is wrong!')
-
-    except Exception as e:
-        print('The fingerprint sensor could not be initialized!')
-        print('Exception message: ' + str(e))
-        exit(1)
-
-    print('Currently used templates: ' + str(f.getTemplateCount()) +'/'+ str(f.getStorageCapacity()))
-
-    try:
-        print('Waiting for finger...')
-
+        global root
+        root = Toplevel(screen2)
+        root.attributes('-fullscreen',True)
+        print('Pressione o dedo no leitor.....')
+        w = Label(root, text="Pressione o dedo no leitor...", width=100, font = "Arial 20")
+        w.pack()
+        root.update()
+        ## Wait that finger is read
         while ( f.readImage() == False ):
             pass
 
+        ## Converts read image to characteristics and stores it in charbuffer 1
         f.convertImage(0x01)
 
+        ## Searchs template
         result = f.searchTemplate()
 
         positionNumber = result[0]
         accuracyScore = result[1]
 
         if ( positionNumber == -1 ):
-            user_not_found()
-            print('No match found!')
-            exit(0)
+            print('Biometria não cadastrada')
+            w['text'] = 'Biometria não cadastrada'
+            root.update()
+            time.sleep(3)
+            root.destroy()
+
         else:
-            home()
             print('Found template at position #' + str(positionNumber))
             print('The accuracy score is: ' + str(accuracyScore))
+            w['text']= 'Biometria Autorizada'
+            root.update()
+            time.sleep(3)
+            home()
+            root.destroy()
+            ##w['text'] = 'Found template at position #' + str(positionNumber), 'The accuracy score is: ' + str(accuracyScore)
 
+
+        ## OPTIONAL stuff
+        ##
+
+        ## Loads the found template to charbuffer 1
         f.loadTemplate(positionNumber, 0x01)
 
+        ## Downloads the characteristics of template loaded in charbuffer 1
         characterics = str(f.downloadCharacteristics(0x01)).encode('utf-8')
 
+        ## Hashes characteristics of template
         print('SHA-2 hash of template: ' + hashlib.sha256(characterics).hexdigest())
 
     except Exception as e:
         print('Operation failed!')
         print('Exception message: ' + str(e))
-        exit(1)
 
+def register_bio2():
+        global s50
+        s50 = Toplevel(screen2)
+        s50.attributes('-fullscreen',True)
+        
 def register_bio():
     try:
-        f = PyFingerprint('/dev/ttyUSB0', 57600, 0xFFFFFFFF, 0x00000000)
-
-        if ( f.verifyPassword() == False ):
-            raise ValueError('The given fingerprint sensor password is wrong!')
-
-    except Exception as e:
-        print('The fingerprint sensor could not be initialized!')
-        print('Exception message: ' + str(e))
-        exit(1)
-
-    print('Currently used templates: ' + str(f.getTemplateCount()) +'/'+ str(f.getStorageCapacity()))
-
-    try:
-        print('Waiting for finger...')
-
+        global toor
+        toor = Toplevel(screen2)
+        toor.attributes('-fullscreen',True)
+        print('Pressione o dedo no leitor.....')
+        w = Label(toor, text="Pressione o dedo no leitor.....", width=100)
+        w.pack()
+        toor.update()
+        ## Wait that finger is read
         while ( f.readImage() == False ):
             pass
 
+        ## Converts read image to characteristics and stores it in charbuffer 1
         f.convertImage(0x01)
 
+        ## Checks if finger is already enrolled
         result = f.searchTemplate()
         positionNumber = result[0]
 
         if ( positionNumber >= 0 ):
             print('Template already exists at position #' + str(positionNumber))
+            w['text'] = 'Biometria ja cadastrada'
+            toor.update()
             exit(0)
 
         print('Remove finger...')
+        w['text'] = 'Remova o dedo'
+        toor.update()
         time.sleep(2)
 
-        print('Waiting for same finger again...')
-
+        print('Pressione o dedo novamente')
+        w['text'] = 'Pressione o dedo novamente'
+        toor.update()
+        ## Wait that finger is read again
         while ( f.readImage() == False ):
             pass
 
+        ## Converts read image to characteristics and stores it in charbuffer 2
         f.convertImage(0x02)
 
+        ## Compares the charbuffers
         if ( f.compareCharacteristics() == 0 ):
             raise Exception('Fingers do not match')
 
+        ## Creates a template
         f.createTemplate()
 
+        ## Saves template at new position number
         positionNumber = f.storeTemplate()
         print('Finger enrolled successfully!')
+        w['text'] = 'Biometria cadastrada com sucesso!'
+        toor.update()
+        time.sleep(3)
+        register_home()
+        toor.destroy()
+
+
         print('New template position #' + str(positionNumber))
 
     except Exception as e:
         print('Operation failed!')
-        print('Exception message: ' + str(e))
-        exit(1)
-
-def delete_bio():
-    try:
-        f = PyFingerprint('/dev/ttyUSB0', 57600, 0xFFFFFFFF, 0x00000000)
-
-        if ( f.verifyPassword() == False ):
-            raise ValueError('The given fingerprint sensor password is wrong!')
-
-    except Exception as e:
-        print('The fingerprint sensor could not be initialized!')
-        print('Exception message: ' + str(e))
-        exit(1)
-
-    ## Gets some sensor information
-    print('Currently used templates: ' + str(f.getTemplateCount()) +'/'+ str(f.getStorageCapacity()))
-
-    ## Tries to delete the template of the finger
-    try:
-        positionNumber = input('Please enter the template position you want to delete: ')
-        positionNumber = int(positionNumber)
-
-        if ( f.deleteTemplate(positionNumber) == True ):
-            print('Template deleted!')
-
-    except Exception as e:
-        print('Operation failed!')
+        w['text'] = 'Operation Failed!'
         print('Exception message: ' + str(e))
         exit(1)
 
@@ -348,6 +361,35 @@ def delete_user_home():
     Button(screen112, text = "Concluir", width = 10, height = 1, command = delete_user, bg = "green", font = "Arial 8").pack()
     Button(screen112, text = "Voltar", width = 10, height = 1, command = seila3, bg = "red", font = "Arial 8").pack()
 
+def destroi():
+    screen51.destroy()
+
+def Token2():
+    senha = password_verify.get()
+    password_entry1.delete(0, END)
+    if senha == "123":
+        home()
+        screen51.destroy()
+    else:
+        Label(screen51, text = "Token Incorreto ", font = "Arial 12", fg = "red").pack()
+
+def Token():
+     global screen51
+     screen51 = Toplevel(screen2)
+     screen51.title("Success")
+     screen51.attributes('-fullscreen',True)
+     global password_verify
+     password_verify = StringVar()
+     global password_entry1
+     Label(screen51, text = "", font = "Arial 12").pack()
+     Label(screen51, text = "", font = "Arial 12").pack()
+     Label(screen51, text = "", font = "Arial 12").pack()
+     Label(screen51, text = "Senha ", font = "Arial 12").pack()
+     password_entry1 = Entry(screen51, textvariable = password_verify, show = "***", font = "Arial 12")
+     password_entry1.pack()
+     Button(screen51, text = "Login", width = 10, height = 1, command = Token2, bg = "green", font = "Arial 8").pack()
+     Button(screen51, text = "Voltar", width = 10, height = 1, command = destroi, bg = "red", font = "Arial 8").pack()
+
 def register_user():
     print("working")
 
@@ -516,10 +558,10 @@ def main_screen():
     screen2.title("Start Security")
     screen2.attributes('-fullscreen',True)
     Label(screen2, text = "").pack()
-    Label(screen2, text = "").pack()
-    Button(screen2, text = "Biometria", width = 25, height = 3, command = search_bio, font = "Arial 12").pack()
-    Button(screen2, text = "Login", width = 25, height = 3, command = login, font = "Arial 12").pack()
-    Button(screen2, text = "PANICO", width = 25, height = 3, command = send_email2, font = "Arial 12", bg = "yellow").pack()
+    Button(screen2, text = "Biometria", width = 25, height = 2, command = search_bio, font = "Arial 12").pack()
+    Button(screen2, text = "Login", width = 25, height = 2, command = login, font = "Arial 12").pack()
+    Button(screen2, text = "Token", width = 25, height = 2, command = Token, font = "Arial 12").pack()
+    Button(screen2, text = "PANICO", width = 25, height = 2, command = send_email2, font = "Arial 12", bg = "yellow").pack()
     Label(screen2, text = "").pack()
     Button(screen2, text = "Sair", width = 10, height = 1, command = voltar, font = "Arial 8", bg = "red").pack()
     screen2.mainloop()
