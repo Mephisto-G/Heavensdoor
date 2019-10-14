@@ -439,13 +439,7 @@ def register_user():
     file.write(password_info+"\n")
     file.write(email_info)
     file.close()
-
-    file=open(username_info, "w")
-    csv_dict_file_writer = csv.DictWriter(file, fieldnames=column_name_list)
-    csv_dict_file_writer.writeheader()
-    csv_dict_file_writer.writerow(email_info)
-    file.close()
-
+    
     username_entry.delete(0, END)
     password_entry.delete(0, END)
     email_entry.delete(0, END)
