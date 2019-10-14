@@ -8,6 +8,7 @@ from email import encoders
 import hashlib
 import time
 import csv
+from csv import DictWriter
 from pyfingerprint.pyfingerprint import PyFingerprint
 
 try:
@@ -22,6 +23,44 @@ except Exception as e:
     exit(1)
 
 
+def mano():
+    CU.destroy()
+
+def delete_bio():
+    try:
+        global CU
+        CU = Toplevel(screen2)
+        CU.attributes('-fullscreen',True)
+
+        global entry
+
+        entry = StringVar()
+
+        global entry2
+
+
+        Label(CU, text="Informe o nome do usuario que deseja deletar", width=100).pack()
+        entry2 = Entry(CU, textvariable = entry, font = "Arial 12")
+        entry2.pack()
+        Button(CU, text = "Confirmar", width = 10, height = 1, command = delete_bio2, font = "Arial 8", bg = "green").pack()
+        Button(CU, text = "Voltar", width = 10, height = 1, command = mano, font = "Arial 8", bg = "red").pack()
+
+    except Exception as e:
+        print('Operation failed!')
+        print('Exception message: ' + str(e))
+        exit(1)
+
+def delete_bio2():
+    listinha = os.listdir()
+    USUARIO= entry.get()
+    USER = open (USUARIO+'.FiPy', 'r')
+    verify = int(USER.read())
+    positionNumber = verify
+    if ( f.deleteTemplate(positionNumber) == True ):
+        print('Template deleted!')
+        Label(CU, text = 'Biometria Deletada', font = 'Arial 12', fg = 'green').pack()
+    else:
+        print ("V a t o   M a n o   C u")
 
 def search_bio():
     try:
@@ -62,31 +101,33 @@ def search_bio():
             root.destroy()
             ##w['text'] = 'Found template at position #' + str(positionNumber), 'The accuracy score is: ' + str(accuracyScore)
 
-
-        ## OPTIONAL stuff
-        ##
-
-        ## Loads the found template to charbuffer 1
-        f.loadTemplate(positionNumber, 0x01)
-
-        ## Downloads the characteristics of template loaded in charbuffer 1
-        characterics = str(f.downloadCharacteristics(0x01)).encode('utf-8')
-
-        ## Hashes characteristics of template
-        print('SHA-2 hash of template: ' + hashlib.sha256(characterics).hexdigest())
-
     except Exception as e:
         print('Operation failed!')
         print('Exception message: ' + str(e))
 
+def mano2():
+    s50.destroy()
+
 def register_bio2():
-        global s50
-        s50 = Toplevel(screen2)
-        s50.attributes('-fullscreen',True)
-        
+    global s50
+    s50 = Toplevel(screen2)
+    s50.attributes('-fullscreen',True)
+
+    global username
+    username = StringVar()
+    global username_entry1
+
+    Label(s50, text = "Usuario ", font = "Arial 12").pack()
+    username_entry1 = Entry(s50, textvariable = username, font = "Arial 12")
+    username_entry1.pack()
+    Button(s50, text = "Registrar", width = 10, height = 1, command = register_bio, bg = "green", font = "Arial 8").pack()
+    Button(s50, text = "Voltar", width = 10, height = 1, command =  mano2, bg = "red", font = "Arial 8").pack()
+
+
 def register_bio():
     try:
         global toor
+        username1 = username.get()
         toor = Toplevel(screen2)
         toor.attributes('-fullscreen',True)
         print('Pressione o dedo no leitor.....')
@@ -105,10 +146,11 @@ def register_bio():
         positionNumber = result[0]
 
         if ( positionNumber >= 0 ):
-            print('Template already exists at position #' + str(positionNumber))
+            print('Template already exists at position')
             w['text'] = 'Biometria ja cadastrada'
             toor.update()
-            exit(0)
+            time.sleep(3)
+            toor.destroy()
 
         print('Remove finger...')
         w['text'] = 'Remova o dedo'
@@ -138,7 +180,9 @@ def register_bio():
         w['text'] = 'Biometria cadastrada com sucesso!'
         toor.update()
         time.sleep(3)
-        register_home()
+        biometria = open (username.get()+'.FiPy', 'w')
+        biometria.write(str(positionNumber))
+        biometria.close()
         toor.destroy()
 
 
@@ -149,14 +193,6 @@ def register_bio():
         w['text'] = 'Operation Failed!'
         print('Exception message: ' + str(e))
         exit(1)
-
-def get_contacts():
-
-    emails = []
-    with open('Emails.txt', mode='r', encoding='utf-8') as contacts_file:
-        for a_contact in contacts_file:
-            emails.append(a_contact.split()[0])
-            return emails
 
 def send_email3():
     email = 'linkdragonsuporte@gmail.com'
@@ -288,30 +324,30 @@ def seila3():
     screen112.destroy()
 
 def password_not_recognised():
-  global screen4
-  screen4 = Toplevel(screen2)
-  screen4.title("Success")
-  screen4.attributes('-fullscreen',True)
-  Label(screen4, text = "").pack()
-  Label(screen4, text = "").pack()
-  Label(screen4, text = "").pack()
-  Label(screen4, text = "").pack()
-  Label(screen4, text = "Senha Incorreta", font = "Arial 15").pack()
-  Label(screen4, text = "").pack()
-  Label(screen4, text = "").pack()
-  Button(screen4, text = "OK", command =delete3, width = 10, height = 1, font = "Arial 8", bg = "red").pack()
+    global screen4
+    screen4 = Toplevel(screen2)
+    screen4.title("Success")
+    screen4.attributes('-fullscreen',True)
+    Label(screen4, text = "").pack()
+    Label(screen4, text = "").pack()
+    Label(screen4, text = "").pack()
+    Label(screen4, text = "").pack()
+    Label(screen4, text = "Senha Incorreta", font = "Arial 15").pack()
+    Label(screen4, text = "").pack()
+    Label(screen4, text = "").pack()
+    Button(screen4, text = "OK", command =delete3, width = 10, height = 1, font = "Arial 8", bg = "red").pack()
 
 def user_not_found():
-  global screen5
-  screen5 = Toplevel(screen2)
-  screen5.title("Success")
-  screen5.attributes('-fullscreen',True)
-  Label(screen5, text = "").pack()
-  Label(screen5, text = "").pack()
-  Label(screen5, text = "").pack()
-  Label(screen5, text = "Usuario Inexistente", font = "Arial 15").pack()
-  Label(screen5, text = "").pack()
-  Button(screen5, text = "OK", command =delete4, bg = "red", font = "Arial 8", width = 10, height = 1).pack()
+    global screen5
+    screen5 = Toplevel(screen2)
+    screen5.title("Success")
+    screen5.attributes('-fullscreen',True)
+    Label(screen5, text = "").pack()
+    Label(screen5, text = "").pack()
+    Label(screen5, text = "").pack()
+    Label(screen5, text = "Usuario Inexistente", font = "Arial 15").pack()
+    Label(screen5, text = "").pack()
+    Button(screen5, text = "OK", command =delete4, bg = "red", font = "Arial 8", width = 10, height = 1).pack()
 
 def login_verify():
 
@@ -348,6 +384,7 @@ def delete_user_home():
     screen112.attributes('-fullscreen',True)
 
     global username_verify
+    username_verify = StringVar()
     global username_entry1
 
     Label(screen112, text = "").pack()
@@ -387,7 +424,7 @@ def Token():
      Label(screen51, text = "Senha ", font = "Arial 12").pack()
      password_entry1 = Entry(screen51, textvariable = password_verify, show = "***", font = "Arial 12")
      password_entry1.pack()
-     Button(screen51, text = "Login", width = 10, height = 1, command = Token2, bg = "green", font = "Arial 8").pack()
+     Button(screen51, text = "Confirmar", width = 10, height = 1, command = Token2, bg = "green", font = "Arial 8").pack()
      Button(screen51, text = "Voltar", width = 10, height = 1, command = destroi, bg = "red", font = "Arial 8").pack()
 
 def register_user():
@@ -403,9 +440,10 @@ def register_user():
     file.write(email_info)
     file.close()
 
-    file=open("Emails.csv", "w")
-    file = csv.writer(email_info, delimiter=",", quoting=csv.QUOTE_ALL, quotechar="'")
-    csv_file_writer.writerow(list_data)
+    file=open(username_info, "w")
+    csv_dict_file_writer = csv.DictWriter(file, fieldnames=column_name_list)
+    csv_dict_file_writer.writeheader()
+    csv_dict_file_writer.writerow(email_info)
     file.close()
 
     username_entry.delete(0, END)
@@ -449,38 +487,38 @@ def change_password():
     Button(screen1, text = "Voltar", width = 10, height = 1, command = voltar_registerhome, bg = "red", font = "Arial 8").pack()
 
 def register():
-  global screen1
-  screen1 = Toplevel(screen2)
-  screen1.title("Start Security")
-  screen1.attributes('-fullscreen',True)
+    global screen1
+    screen1 = Toplevel(screen2)
+    screen1.title("Start Security")
+    screen1.attributes('-fullscreen',True)
 
-  global username
-  global password
-  global email
-  global username_entry
-  global password_entry
-  global email_entry
+    global username
+    global password
+    global email
+    global username_entry
+    global password_entry
+    global email_entry
 
-  username = StringVar()
-  password = StringVar()
-  email = StringVar()
+    username = StringVar()
+    password = StringVar()
+    email = StringVar()
 
-  Label(screen1, text = "Por favor preencha os campos abaixo", font = "Arial 12").pack()
-  Label(screen1, text = "").pack()
-  Label(screen1, text = "Usuario * ", font = "Arial 12").pack()
-  username_entry = Entry(screen1, textvariable = username, font = "Arial 12")
-  username_entry.pack()
-  Label(screen1, text = "").pack()
-  Label(screen1, text = "Senha * ", font = "Arial 12").pack()
-  password_entry =  Entry(screen1, textvariable = password, font = "Arial 12")
-  password_entry.pack()
-  Label(screen1, text = "").pack()
-  Label(screen1, text = "Email * ", font = "Arial 12").pack()
-  email_entry =  Entry(screen1, textvariable = email, font = "Arial 12")
-  email_entry.pack()
-  Label(screen1, text = "").pack()
-  Button(screen1, text = "Registrar", width = 10, height = 1, command = register_user, bg = "green", font = "Arial 8").pack()
-  Button(screen1, text = "Voltar", width = 10, height = 1, command = voltar_registerhome, bg = "red", font = "Arial 8").pack()
+    Label(screen1, text = "Por favor preencha os campos abaixo", font = "Arial 12").pack()
+    Label(screen1, text = "").pack()
+    Label(screen1, text = "Usuario * ", font = "Arial 12").pack()
+    username_entry = Entry(screen1, textvariable = username, font = "Arial 12")
+    username_entry.pack()
+    Label(screen1, text = "").pack()
+    Label(screen1, text = "Senha * ", font = "Arial 12").pack()
+    password_entry =  Entry(screen1, textvariable = password, font = "Arial 12")
+    password_entry.pack()
+    Label(screen1, text = "").pack()
+    Label(screen1, text = "Email * ", font = "Arial 12").pack()
+    email_entry =  Entry(screen1, textvariable = email, font = "Arial 12")
+    email_entry.pack()
+    Label(screen1, text = "").pack()
+    Button(screen1, text = "Registrar", width = 10, height = 1, command = register_user, bg = "green", font = "Arial 8").pack()
+    Button(screen1, text = "Voltar", width = 10, height = 1, command = voltar_registerhome, bg = "red", font = "Arial 8").pack()
 
 def register_home():
     global screen12
@@ -492,7 +530,7 @@ def register_home():
     Label(screen12, text = "").pack()
     Button(screen12, text = "Registrar Login", width = 25, height = 3, command = register, font = "Arial 12").pack()
     Label(screen12, text = "").pack()
-    Button(screen12, text = "Registrar Biometria", width = 25, height = 3, command = register_bio, font = "Arial 12").pack()
+    Button(screen12, text = "Registrar Biometria", width = 25, height = 3, command = register_bio2, font = "Arial 12").pack()
     Label(screen12, text = "").pack()
     Label(screen12, text = "").pack()
     Button(screen12, text = "Voltar", width = 12, height = 1, command = voltar_login, bg = "red", font = "Arial 8").pack()
@@ -512,17 +550,17 @@ def Change_home():
     Button(screen4, text = "Voltar", width = 12, height = 1, command = delete3, bg = "red", font = "Arial 8").pack()
 
 def home():
-  global screen40
-  screen40 = Toplevel(screen2)
-  screen40.title("Start Security")
-  Label(screen40,text = "Bem Vindo", bg = "grey", width = 300, height = 2, font = "Arial 12").pack()
-  screen40.attributes('-fullscreen',True)
-  Label(screen40, text = "").pack()
-  Button(screen40, text = "Registrar Usuario", width = 25, height = 3, command = register_home, font = "Arial 12" ).pack()
-  Button(screen40, text = "Alterar Dados", width = 25, height = 3, command = Change_home,font = "Arial 12").pack()
-  Button(screen40, text = "PANICO", width = 25, height = 3, command = send_email2, font = "Arial 12", bg = "yellow").pack()
-  Label(screen40, text = "").pack()
-  Button(screen40, text = "Desconectar", width = 12, height = 2, command = seila, bg = "red", font = "Arial 8").pack()
+    global screen40
+    screen40 = Toplevel(screen2)
+    screen40.title("Start Security")
+    Label(screen40,text = "Bem Vindo", bg = "grey", width = 300, height = 2, font = "Arial 12").pack()
+    screen40.attributes('-fullscreen',True)
+    Label(screen40, text = "").pack()
+    Button(screen40, text = "Registrar Usuario", width = 25, height = 3, command = register_home, font = "Arial 12" ).pack()
+    Button(screen40, text = "Alterar Dados", width = 25, height = 3, command = Change_home,font = "Arial 12").pack()
+    Button(screen40, text = "PANICO", width = 25, height = 3, command = send_email2, font = "Arial 12", bg = "yellow").pack()
+    Label(screen40, text = "").pack()
+    Button(screen40, text = "Desconectar", width = 12, height = 2, command = seila, bg = "red", font = "Arial 8").pack()
 
 def login():
     global screen50
